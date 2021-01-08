@@ -3,5 +3,6 @@
   systemd:
     name: vncserver@1.service
     daemon_reload: yes
-    state: enabled
+    state: restarted
+    enabled: yes
     

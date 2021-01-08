@@ -1,18 +1,18 @@
 ---
 - name: Install necessary packages
-  package:
+  apt:
     name: "{{ item }}"
     state: present
     update_cache: true
   with_items: "{{ packages }}"
 
- - name: Create .vnc directory
-   file:
-     path: "/home/{{ vncuser }}/.vnc"
-     state: directory
-     mode: 0755
-     owner: "{{ vncuser }}"
-     group: "{{ vncuser }}"
+- name: Create .vnc directory
+  file:
+    path: "/home/{{ vncuser }}/.vnc"
+    state: directory
+    mode: 0755
+    owner: "{{ vncuser }}"
+    group: "{{ vncuser }}"
 
 - name: Copy xtartup file into .vnc directory
   copy:
@@ -31,13 +31,20 @@
     creates: "/home/{{ vncuser }}/.vnc/passwd"
     executable: /bin/bash
 
-- name: Update per-user systemd service files
-  template:
-    src: vncserver@.service.j2
-    dest: "/home/{{ vncuser }}/.config/systemd/user/vncserver.service"
-    mode: 0644
+- name: Change ownership and permissions on passwd file
+  file:
+    path: "/home/{{ vncuser }}/.vnc/passwd"
     owner: "{{ vncuser }}"
     group: "{{ vncuser }}"
+    mode: 0700        
+
+- name: Create vncserver systemd service
+  template:
+    src: vncserver@.service.j2
+    dest: /etc/systemd/system/vncserver@.service
+    mode: 0644
+    owner: root
+    group: root
   notify: Enable and start vncserver
 
 

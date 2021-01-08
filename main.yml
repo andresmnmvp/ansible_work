@@ -1,0 +1,4 @@
+- hosts: AUTOMATION
+  become: true
+  roles:
+    - setup_vnc
