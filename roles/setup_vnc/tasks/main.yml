@@ -1,0 +1,46 @@
+---
+- name: Install necessary packages
+  package:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items: "{{ packages }}"
+
+ - name: Create .vnc directory
+   file:
+     path: "/home/{{ vncuser }}/.vnc"
+     state: directory
+     mode: 0755
+     owner: "{{ vncuser }}"
+     group: "{{ vncuser }}"
+
+- name: Copy xtartup file into .vnc directory
+  copy:
+    src: xstartup
+    dest: "/home/{{ vncuser }}/.vnc/xstartup"
+    mode: 0755
+    owner: "{{ vncuser }}"
+    group: "{{ vncuser }}"
+
+- name: Set vnc passwords tightvnc
+  shell: |
+    set -o pipefail
+    echo {{ vncpassword }} | vncpasswd -f > /home/{{ vncuser }}/.vnc/passwd
+  args:
+    chdir: "/home/{{ vncuser }}/.vnc"
+    creates: "/home/{{ vncuser }}/.vnc/passwd"
+    executable: /bin/bash
+
+- name: Update per-user systemd service files
+  template:
+    src: vncserver@.service.j2
+    dest: "/home/{{ vncuser }}/.config/systemd/user/vncserver.service"
+    mode: 0644
+    owner: "{{ vncuser }}"
+    group: "{{ vncuser }}"
+  notify: Enable and start vncserver
+
+
+     
+      
+        
