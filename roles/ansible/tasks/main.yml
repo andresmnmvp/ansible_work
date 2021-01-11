@@ -27,7 +27,6 @@
     mode: 0755
     owner: "{{ serveruser }}"
     group: "{{ serveruser }}"
-    state: present
 
 - name: Install dependencies
   shell: ansible-galaxy install -r requirements.yml
