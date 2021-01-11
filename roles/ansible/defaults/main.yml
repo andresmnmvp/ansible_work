@@ -1,0 +1,10 @@
+packages:
+  - anisble
+  - python3-pip
+
+serveruser: mvpadmin  
+
+git_repo: https://github.com/andresmnmvp/ansible_meraki.git
+
+pip_packages:
+  - jmespath

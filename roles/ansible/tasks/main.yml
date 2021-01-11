@@ -1,0 +1,41 @@
+---
+- name: Install necessary packages
+  apt:
+    name: "{{ item }}"
+    update_cache: true
+    state: present
+  loop: "{{ packages }}"
+
+- name: Install pip packages
+  pip:
+    name: jmespath
+    state: present
+  loop: "{{ pip_packages }}"    
+
+- name: Create ansible directory
+  file:
+    path:  "/home/{{ serveruser }}/ansible"
+    state: directory
+    owner: "{{ serveruser }}"
+    group: "{{ serveruser }}"
+    mode: 0755
+
+- name: Copy requirements.yml file
+  copy: 
+    src: requirements.yml
+    dest: "/home/{{ serveruser }}/ansible/requirements.yml"
+    mode: 0755
+    owner: "{{ serveruser }}"
+    group: "{{ serveruser }}"
+    state: present
+
+- name: Install dependencies
+  shell: ansible-galaxy install -r requirements.yml
+  args:
+    chdir: "/home/{{ serveruser }}/ansible"
+    executable: /bin/bash
+
+- name: Download git repo for meraki playbooks
+  git:
+    repo: "{{ git_repo }}"
+    dest: /home/{{ serveruser }}/ansible_meraki
