@@ -14,6 +14,7 @@
 - name: Create Gitea docker container from inline docker-compose
   community.general.docker_compose:
     project_name: Gitea
+    recreate: always
     definition:
       version: '3.3'
 
