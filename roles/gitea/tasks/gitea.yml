@@ -1,0 +1,42 @@
+---
+- name: Create docker directory
+  file:
+    path: "/home/{{ serveruser }}/docker/gitea"
+    state: directory
+    owner: "{{ serveruser }}"
+    group: "{{ serveruser }}"
+    mode: 0755
+
+- name: Get UID of user
+  shell: "id -u {{ serveruser }}"
+  register: serveruser_id
+
+- name: Create Gitea docker container from inline docker-compose
+  community.general.docker_compose:
+    project_name: Gitea
+    definition:
+      version: '3.3'
+
+      networks:
+        gitea:
+          external: false
+
+      services:
+        sever:
+          image: gitea/gitea:latest
+          container_name: gitea
+          environment:
+            - USER_UID="{{ serveruser_id.stdout }}"
+            - USER_GUI="{{ serveruser_id.stdout }}"
+          restart: always
+          networks:
+            - gitea
+          volumes:
+            - "/home/{{ serveruser }}/docker/gitea:/data"
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
+          ports:
+            - "3000:3000"
+            - "222:22"
+            
+

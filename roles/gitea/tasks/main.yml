@@ -1,0 +1,6 @@
+---
+- name: Install docker and docker-compose
+  include: docker.yml
+
+- name: Setup Gitea docker container
+  include: gitea.yml  

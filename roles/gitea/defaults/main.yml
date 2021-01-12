@@ -1,8 +1,14 @@
 ---
 docker_key_url: https://download.docker.com/linux/ubuntu/gpg
-docker_repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+docker_repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 
 docker_packages:
   - docker-ce
   - docker-ce-cli
   - containerd.io
+
+pip_packages:
+  - docker
+  - docker-compose  
+
+serveruser: mvpadmin

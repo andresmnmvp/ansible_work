@@ -1,5 +1,11 @@
 - hosts: AUTOMATION
   become: true
   roles:
-    - setup_vnc
-    - ansible
+    - role: setup_vnc
+      tags: [ all, vnc ]
+
+    - role: ansible
+      tags: [ all, ansible ]
+    
+    - role: gitea
+      tags: [ all, gitea ]
