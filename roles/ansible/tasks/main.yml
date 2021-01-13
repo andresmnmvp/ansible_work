@@ -35,6 +35,8 @@
     executable: /bin/bash
 
 - name: Download git repo for meraki playbooks
+  become: true
+  become_user: "{{ serveruser }}"
   git:
     repo: "{{ git_repo }}"
     dest: /home/{{ serveruser }}/ansible_meraki
