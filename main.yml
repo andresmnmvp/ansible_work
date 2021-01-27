@@ -1,3 +1,13 @@
+- hosts: all
+  become: true
+  tasks:
+  - name: Update Debian servers
+    apt:
+      update_cache: yes
+      upgrade: dist
+    when: ansible_distribution in ["Debian", "Ubuntu"]
+    tags: [ all, update ]
+
 - hosts: AUTOMATION
   become: true
   roles:
