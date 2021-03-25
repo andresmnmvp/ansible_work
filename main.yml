@@ -21,6 +21,7 @@
       tags: [ all, gitea ]
 
     - role: ansible-role-joinaddomain
+      tags: [ad]
       vars:
         - ad_domain: "mvpnc.local"
         - ad_domain_user: 
