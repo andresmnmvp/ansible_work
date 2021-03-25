@@ -22,8 +22,8 @@
 
     - role: ansible-role-joinaddomain
       vars:
-        - ad_domain: "example.com"
-        - ad_domain_user: "administrator"
-        - ad_domain_pass: "password123"
+        - ad_domain: "mvpnc.local"
+        - ad_domain_user: 
+        - ad_domain_pass: 
         - ad_ssh_groups: [Domain Users]
         - ad_sudo_groups: [Linux Admins]
